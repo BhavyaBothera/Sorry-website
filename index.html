@@ -1,60 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A heartfelt, personal apology — made with care.">
+  <meta name="description" content="A heartfelt, personal apology for Kavya — made with care and genuine reflection.">
   <title>For Kavya 💗</title>
 
-  <!-- Google Fonts -->
+  <!-- Progressive Enhancement: replace no-js with js immediately if script executes -->
+  <script>
+    document.documentElement.classList.replace('no-js', 'js');
+  </script>
+
+  <!-- Google Fonts Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 
 <body>
 
+  <!-- Skip link for keyboard and screen-reader users -->
+  <a href="#apology" class="skip-link" id="global-skip-link">Skip to the apology letter</a>
+
   <!-- ===== SECTION 0: INTRO / ENVELOPE ===== -->
-  <div id="intro" role="dialog" aria-label="A surprise for Kavya">
-    <!-- Floating particles -->
+  <section id="intro" class="intro-overlay" aria-label="A surprise letter for Kavya">
+    <!-- Floating background particles -->
     <div class="intro-particles" aria-hidden="true" id="intro-particles"></div>
 
-    <!-- Glow -->
+    <!-- Soft ambient glow -->
     <div class="intro-glow" aria-hidden="true"></div>
 
-    <!-- Envelope -->
+    <!-- Envelope Wrapper -->
     <div class="envelope-wrapper">
       <p class="intro-pssst">pssst… Kavya 🥹</p>
       <p class="intro-sub">I made a tiny little something for you. No pressure, just open it?</p>
 
-      <div class="envelope" id="envelope" tabindex="0" role="button" aria-label="Open the envelope">
-        <div class="envelope-flap"></div>
-        <div class="envelope-body">
-          <div class="envelope-letter">💗</div>
+      <!-- Interactive Envelope Button -->
+      <button class="envelope" id="envelope-btn" type="button" aria-label="Open the apology envelope for Kavya">
+        <div class="envelope-back" aria-hidden="true"></div>
+        <div class="envelope-letter" id="envelope-letter" aria-hidden="true">
+          <span class="envelope-letter-heart">💌</span>
+          <span class="envelope-letter-title">For Kavya 💗</span>
+          <span class="envelope-letter-sub">A genuine apology</span>
         </div>
-        <!-- Heart seal SVG -->
-        <svg class="envelope-seal" viewBox="0 0 48 48" aria-hidden="true">
-          <path
-            d="M24 42 C24 42 4 28 4 16 C4 9 10 4 16 4 C20 4 23 7 24 9 C25 7 28 4 32 4 C38 4 44 9 44 16 C44 28 24 42 24 42Z"
-            fill="#FF6FAD" opacity="0.9" />
-        </svg>
-      </div>
-
-      <button class="intro-btn" id="open-btn" aria-label="Open your little surprise">
-        OPEN YOUR LITTLE SURPRISE 💌
+        <div class="envelope-pocket" aria-hidden="true"></div>
+        <div class="envelope-flap" aria-hidden="true"></div>
+        
+        <!-- Wax Seal with Heart -->
+        <div class="envelope-seal" aria-hidden="true">
+          <svg viewBox="0 0 48 48" class="seal-icon" focusable="false">
+            <circle cx="24" cy="24" r="22" fill="#D82E78" />
+            <circle cx="24" cy="24" r="18" fill="#E8488E" />
+            <path
+              d="M24 35 C24 35 12 26 12 18 C12 13 16 10 20 10 C22.5 10 24 12 24 12 C24 12 25.5 10 28 10 C32 10 36 13 36 18 C36 26 24 35 24 35Z"
+              fill="#FFFFFF" opacity="0.95" />
+          </svg>
+        </div>
       </button>
+
+      <!-- Primary Action & Quick Bypass -->
+      <div class="intro-actions">
+        <button class="intro-btn" id="open-btn" type="button">
+          OPEN YOUR LITTLE SURPRISE 💌
+        </button>
+        <button class="intro-skip-btn" id="intro-skip-btn" type="button">
+          Skip straight to letter ↓
+        </button>
+      </div>
     </div>
-  </div>
+  </section>
 
   <!-- ===== MAIN CONTENT ===== -->
-  <div id="main-content">
+  <main id="main-content" tabindex="-1">
 
-    <!-- Background decoration -->
+    <!-- Ambient background gradient decoration -->
     <div class="bg-decor" aria-hidden="true">
       <div class="bg-blob bg-blob-1"></div>
       <div class="bg-blob bg-blob-2"></div>
@@ -62,20 +86,23 @@
     </div>
 
     <!-- ===== SECTION 1: HERO ===== -->
-    <section class="hero" id="hero" aria-label="Apology introduction">
+    <section class="hero" id="hero" aria-label="Introduction">
+      <!-- Heart Character -->
       <div class="apology-character" id="apology-character" aria-hidden="true">
         <div class="char-heart"></div>
         <div class="char-eyes">
           <div class="char-eye"><span class="char-eye-shine"></span></div>
           <div class="char-eye"><span class="char-eye-shine"></span></div>
         </div>
+        <div class="char-blush char-blush-left"></div>
+        <div class="char-blush char-blush-right"></div>
         <div class="char-note">sorry!</div>
       </div>
 
-      <h1 class="hero-heading reveal">Okay Kavya… I messed up. 🥺</h1>
+      <h1 class="hero-heading reveal" id="hero-heading">Okay Kavya… I messed up. 🥺</h1>
 
       <p class="hero-sub reveal reveal-delay-1">
-        And before you say "hmm", "okay", or leave me on delivered… hear me out for just a tiny minute.
+        And before you say &ldquo;hmm&rdquo;, &ldquo;okay&rdquo;, or leave me on delivered… hear me out for just a tiny minute.
       </p>
 
       <div class="sticker reveal reveal-delay-2" aria-hidden="true">Certified idiot moment 🤡</div>
@@ -85,17 +112,17 @@
       </p>
 
       <div class="scroll-indicator reveal reveal-delay-4" aria-hidden="true">
-        <span>There's a little more…</span>
+        <span>There's a little more below</span>
         <div class="scroll-indicator-arrow"></div>
       </div>
     </section>
 
     <!-- ===== SECTION 2: THE APOLOGY LETTER ===== -->
     <section class="apology-section" id="apology" aria-label="The apology letter">
-      <h2 class="section-heading reveal">The actual apology. 💌</h2>
+      <h2 class="section-heading reveal" id="apology-heading">The actual apology. 💌</h2>
 
       <div class="letter-card reveal reveal-delay-1">
-        <!-- Decorative elements -->
+        <!-- Decorative stationery elements -->
         <div class="paperclip" aria-hidden="true"></div>
         <span class="letter-doodle letter-doodle-1" aria-hidden="true">♡</span>
         <span class="letter-doodle letter-doodle-2" aria-hidden="true">♡</span>
@@ -104,27 +131,28 @@
         <p class="letter-greeting">Hey Kavya,</p>
 
         <div class="letter-text" id="letter-text">
-          <p>I know I've already said sorry, but I don't think I've properly explained what I actually mean.</p>
+          <p class="letter-para">I know I've already said sorry, but I don't think I've properly explained what I
+            actually mean.</p>
 
-          <p>I was already angry about something, and I ended up taking that anger out on you. You didn't deserve that,
-            and I'm genuinely sorry.</p>
+          <p class="letter-para">I was already angry about something, and I ended up taking that anger out on you. You
+            didn't deserve that, and I'm genuinely sorry.</p>
 
-          <p>You weren't the reason I was upset, and it wasn't fair to make you feel like you were. Just because I was
-            having a bad moment doesn't give me the right to treat someone I care about badly.</p>
+          <p class="letter-para">You weren't the reason I was upset, and it wasn't fair to make you feel like you were.
+            Just because I was having a bad moment doesn't give me the right to treat someone I care about badly.</p>
 
-          <p>Our conversations have become a genuinely nice part of my day, and somewhere along the way, our friendship
-            became important to me. I don't want one stupid moment of mine to make you feel that your friendship doesn't
-            matter.</p>
+          <p class="letter-para">Our conversations have become a genuinely nice part of my day, and somewhere along the
+            way, our friendship became important to me. I don't want one stupid moment of mine to make you feel that
+            your friendship doesn't matter.</p>
 
-          <p>I'm not making this website to force you to forgive me or to make you stop being angry. You have every
-            right to feel how you feel, and I'm willing to give you the time and space you need.</p>
+          <p class="letter-para">I'm not making this website to force you to forgive me or to make you stop being angry.
+            You have every right to feel how you feel, and I'm willing to give you the time and space you need.</p>
 
-          <p>I just wanted you to know that I understand I messed up, I'm sorry for hurting you, and I'll try to handle
-            my anger better instead of letting it affect you.</p>
+          <p class="letter-para">I just wanted you to know that I understand I messed up, I'm sorry for hurting you, and
+            I'll try to handle my anger better instead of letting it affect you.</p>
 
-          <p>You don't have to reply right now. Take your time.</p>
+          <p class="letter-para">You don't have to reply right now. Take your time.</p>
 
-          <p>And whenever you're ready, I'd really like us to be okay again.</p>
+          <p class="letter-para">And whenever you're ready, I'd really like us to be okay again.</p>
         </div>
 
         <p class="letter-sign">— Your occasionally dumb, but genuinely sorry friend 💗</p>
@@ -137,7 +165,7 @@
       <p class="section-subtext reveal reveal-delay-1">Not excuses. Just honest reflection.</p>
 
       <div class="cards-grid">
-        <article class="improve-card reveal reveal-delay-1" tabindex="0">
+        <article class="improve-card reveal reveal-delay-1">
           <span class="card-sparkle" aria-hidden="true">✨</span>
           <span class="card-icon" aria-hidden="true">🧠</span>
           <h3 class="card-title">Pause before reacting</h3>
@@ -145,7 +173,7 @@
             breath first.</p>
         </article>
 
-        <article class="improve-card reveal reveal-delay-2" tabindex="0">
+        <article class="improve-card reveal reveal-delay-2">
           <span class="card-sparkle" aria-hidden="true">✨</span>
           <span class="card-icon" aria-hidden="true">💗</span>
           <h3 class="card-title">Listen instead of defending</h3>
@@ -153,7 +181,7 @@
             explaining myself.</p>
         </article>
 
-        <article class="improve-card reveal reveal-delay-3" tabindex="0">
+        <article class="improve-card reveal reveal-delay-3">
           <span class="card-sparkle" aria-hidden="true">✨</span>
           <span class="card-icon" aria-hidden="true">🤝</span>
           <h3 class="card-title">Show it through actions</h3>
@@ -170,27 +198,33 @@
         being upset.</p>
 
       <div class="game-wrapper reveal reveal-delay-2">
-        <div class="repair-status">
-          <p class="repair-label" id="repair-label">Repair status: Work in progress…</p>
-          <div class="repair-bar" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"
-            aria-label="Friendship repair progress">
-            <div class="repair-fill" id="repair-fill"></div>
+        <!-- Thoughtful Non-quantified Status Component (no measurable forgiveness score) -->
+        <div class="repair-status-box" role="region" aria-label="Friendship status">
+          <div class="repair-status-header">
+            <span class="repair-status-pill" aria-hidden="true">🕊️ Reality Check</span>
+            <p class="repair-label" id="repair-label">Apology delivered. Real friendship repairs take time. 💗</p>
+          </div>
+          <div class="repair-status-indicators" aria-hidden="true">
+            <span class="status-indicator active" id="dot-1" title="Apology given"></span>
+            <span class="status-indicator" id="dot-2" title="Space respected"></span>
+            <span class="status-indicator" id="dot-3" title="Effort ongoing"></span>
           </div>
         </div>
 
         <div class="game-actions">
-          <button class="game-btn game-btn-choco" id="btn-choco" aria-label="Deploy 3 virtual chocolates">
-            Deploy 3 virtual chocolates 🍫
+          <button class="game-btn game-btn-choco" id="btn-choco" type="button" aria-describedby="game-message">
+            Deploy virtual chocolates 🍫
           </button>
-          <button class="game-btn game-btn-hug" id="btn-hug" aria-label="Send a tiny army of hugs">
+          <button class="game-btn game-btn-hug" id="btn-hug" type="button" aria-describedby="game-message">
             Send a tiny army of hugs 🧸
           </button>
-          <button class="game-btn game-btn-puppy" id="btn-puppy" aria-label="Activate maximum-level puppy eyes">
+          <button class="game-btn game-btn-puppy" id="btn-puppy" type="button" aria-describedby="game-message">
             Activate puppy eyes 🥹
           </button>
         </div>
 
-        <p class="game-message" id="game-message" aria-live="polite"></p>
+        <!-- Dynamic polite message announcer -->
+        <div class="game-message" id="game-message" role="status" aria-live="polite"></div>
       </div>
     </section>
 
@@ -202,9 +236,18 @@
         <div class="promise-heart-bg" aria-hidden="true">💗</div>
 
         <ul class="promise-list">
-          <li class="promise-item reveal reveal-delay-1">💗 I'll try to pause before I react.</li>
-          <li class="promise-item reveal reveal-delay-2">🌷 I'll own my mistakes without making excuses.</li>
-          <li class="promise-item reveal reveal-delay-3">✨ I'll give you the space and respect you deserve.</li>
+          <li class="promise-item reveal reveal-delay-1">
+            <span class="promise-bullet" aria-hidden="true">💗</span>
+            <span>I'll try to pause before I react.</span>
+          </li>
+          <li class="promise-item reveal reveal-delay-2">
+            <span class="promise-bullet" aria-hidden="true">🌷</span>
+            <span>I'll own my mistakes without making excuses.</span>
+          </li>
+          <li class="promise-item reveal reveal-delay-3">
+            <span class="promise-bullet" aria-hidden="true">✨</span>
+            <span>I'll give you the space and respect you deserve.</span>
+          </li>
         </ul>
 
         <p class="promise-footer reveal reveal-delay-4">
@@ -213,7 +256,7 @@
       </div>
     </section>
 
-    <!-- ===== SECTION 6: FINAL LETTER ===== -->
+    <!-- ===== SECTION 6: FINAL MESSAGE & BURST ===== -->
     <section class="final-section" id="final" aria-label="Final message">
       <h2 class="section-heading reveal">Before you go… one last thing.</h2>
 
@@ -223,33 +266,32 @@
           again.
         </p>
         <p class="final-text">
-          Until then, please take care of yourself. And yes, I know I'm currently losing the "best friend behavior"
+          Until then, please take care of yourself. And yes, I know I'm currently losing the &ldquo;best friend behavior&rdquo;
           competition. Fair enough. 😭
         </p>
         <p class="final-sorry">I'm genuinely sorry, Kavya. 💗</p>
       </div>
 
-      <button class="heart-burst-btn reveal reveal-delay-2" id="heart-burst-btn"
-        aria-label="Send a little heart into the universe">
+      <button class="heart-burst-btn reveal reveal-delay-2" id="heart-burst-btn" type="button">
         SEND A LITTLE HEART INTO THE UNIVERSE ✨
       </button>
 
-      <p class="final-aftermath" id="final-aftermath">
-        That's all from me for now. Take your time, Kavya. 💗
+      <p class="final-aftermath" id="final-aftermath" role="status">
+        That's all from me for now. Take all the time and space you need, Kavya. 💗
       </p>
     </section>
 
     <!-- ===== FOOTER ===== -->
     <footer class="site-footer">
       <div class="footer-heart" aria-hidden="true">💗</div>
-      <p class="footer-main">Handcrafted by your bestie Bhavya &amp; a genuinely sorry heart. 💌</p>
+      <p class="footer-main">Handcrafted by your friend Bhavya &amp; a genuinely sorry heart. 💌</p>
       <p class="footer-sub">Zero pressure. Unlimited respect. One very sincere apology.</p>
-      <a href="#hero" class="back-to-top" aria-label="Back to the beginning">Back to the beginning ↑</a>
+      <a href="#hero" class="back-to-top">Back to the beginning ↑</a>
     </footer>
 
-  </div>
+  </main>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=3"></script>
 </body>
 
 </html>

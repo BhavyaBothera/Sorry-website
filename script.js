@@ -1,25 +1,42 @@
 /* =====================================================
-   KAVYA APOLOGY WEBSITE — INTERACTIONS & ANIMATIONS
+   KAVYA APOLOGY WEBSITE — INTERACTIONS & MOTION
+   Vanilla JavaScript — Defensive, Accessible & Memory-Safe
    ===================================================== */
 
 (function () {
   'use strict';
 
-  // ---- Utility Helpers ----
-  const $ = (sel, ctx = document) => ctx.querySelector(sel);
-  const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
-  const prefersReducedMotion = () =>
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // ---- Safe Helper Utilities ----
+  const $ = (selector, context = document) => context.querySelector(selector);
+  const $$ = (selector, context = document) => [...context.querySelectorAll(selector)];
+  const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const rand = (min, max) => Math.random() * (max - min) + min;
 
-  // ---- DOM References ----
+  // ---- Keyframe Injection for Dynamic Particles ----
+  (function injectDynamicKeyframes() {
+    if (document.getElementById('dynamic-particle-styles')) return;
+    const styleEl = document.createElement('style');
+    styleEl.id = 'dynamic-particle-styles';
+    styleEl.textContent = `
+      @keyframes burstParticleMotion {
+        0% { transform: translate(0, 0) scale(0) rotate(0deg); opacity: 0; }
+        15% { opacity: 1; transform: translate(0, 0) scale(1.15) rotate(12deg); }
+        100% { transform: translate(var(--tx, 0), var(--ty, 0)) scale(0.35) rotate(360deg); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(styleEl);
+  })();
+
+  // ---- DOM Elements (Defensively Queried) ----
   const intro = $('#intro');
   const mainContent = $('#main-content');
-  const envelope = $('#envelope');
+  const envelopeBtn = $('#envelope-btn');
   const openBtn = $('#open-btn');
+  const introSkipBtn = $('#intro-skip-btn');
+  const globalSkipLink = $('#global-skip-link');
   const introParticles = $('#intro-particles');
   const letterText = $('#letter-text');
-  const repairFill = $('#repair-fill');
+  const apologyCharacter = $('#apology-character');
   const repairLabel = $('#repair-label');
   const gameMessage = $('#game-message');
   const btnChoco = $('#btn-choco');
@@ -27,176 +44,378 @@
   const btnPuppy = $('#btn-puppy');
   const heartBurstBtn = $('#heart-burst-btn');
   const finalAftermath = $('#final-aftermath');
-  const apologyCharacter = $('#apology-character');
+  const statusIndicators = $$('.status-indicator');
 
-  // ---- State ----
-  let repairProgress = 15;
-  let isGameCooldown = false;
+  // ---- State Management ----
+  let isEnvelopeOpened = false;
+  let isTransitioning = false;
+  let letterRevealed = false;
   let heartBurstFired = false;
-  let activeAnimElements = [];
+  const runningActionTimeouts = new Map();
 
   // =====================================================
-  // INTRO FLOATING PARTICLES
+  // 1. INTRO AMBIENT PARTICLES
   // =====================================================
-  function createIntroParticles() {
-    if (prefersReducedMotion()) return;
+  function initIntroParticles() {
+    if (!introParticles || prefersReducedMotion()) return;
+
     const emojis = ['💗', '✨', '💕', '🌸', '♡', '⭐', '💖'];
-    const count = window.innerWidth < 600 ? 10 : 18;
+    const count = window.innerWidth < 600 ? 8 : 14;
 
     for (let i = 0; i < count; i++) {
       const span = document.createElement('span');
       span.className = 'intro-particle';
       span.textContent = emojis[Math.floor(rand(0, emojis.length))];
       span.setAttribute('aria-hidden', 'true');
-      span.style.left = rand(5, 95) + '%';
-      span.style.animationDelay = rand(0, 8) + 's';
-      span.style.animationDuration = rand(5, 9) + 's';
-      span.style.fontSize = rand(0.8, 1.6) + 'rem';
+      span.style.left = `${rand(5, 95)}%`;
+      span.style.animationDelay = `${rand(0, 6)}s`;
+      span.style.animationDuration = `${rand(6, 10)}s`;
+      span.style.fontSize = `${rand(0.9, 1.5)}rem`;
       introParticles.appendChild(span);
     }
   }
 
   // =====================================================
-  // ENVELOPE OPEN & TRANSITION
+  // 2. ENVELOPE OPENING & FOCUS MANAGEMENT
   // =====================================================
-  function openEnvelope() {
-    if (envelope.classList.contains('opened')) return;
+  function dismissIntro({ skipAnimation = false, targetFocusSelector = '#hero-heading' } = {}) {
+    if (isTransitioning) return;
+    isTransitioning = true;
+    isEnvelopeOpened = true;
 
-    // Animate envelope
-    envelope.classList.add('opened');
+    // Immediately disable controls so user cannot double-trigger
+    if (envelopeBtn) envelopeBtn.disabled = true;
+    if (openBtn) openBtn.disabled = true;
+    if (introSkipBtn) introSkipBtn.disabled = true;
 
-    // Release burst of hearts
-    if (!prefersReducedMotion()) {
-      spawnBurstParticles(envelope, 8, ['💗', '💖', '✨', '💕']);
+    const completeDismissal = () => {
+      if (intro) {
+        intro.classList.add('hidden');
+      }
+      if (mainContent) {
+        mainContent.classList.add('visible');
+      }
+      document.body.classList.remove('js-intro-active');
+
+      // Move focus smoothly to the intended element
+      const targetEl = $(targetFocusSelector);
+      if (targetEl) {
+        targetEl.setAttribute('tabindex', '-1');
+        targetEl.focus({ preventScroll: skipAnimation });
+      } else if (mainContent) {
+        mainContent.focus();
+      }
+
+      // Trigger progressive letter reveals once main is visible
+      triggerLetterReveal();
+      isTransitioning = false;
+    };
+
+    if (skipAnimation || prefersReducedMotion()) {
+      completeDismissal();
+    } else {
+      if (envelopeBtn) {
+        envelopeBtn.classList.add('opened');
+        spawnBurstParticles(envelopeBtn, 8, ['💗', '✨', '💕']);
+      }
+      // Wait for envelope flap & letter emergence animation
+      setTimeout(completeDismissal, 850);
     }
-
-    // After a beat, transition to main content
-    setTimeout(() => {
-      intro.classList.add('hidden');
-      mainContent.classList.add('visible');
-      document.body.style.overflow = '';
-
-      // Start letter paragraph reveals after main becomes visible
-      setTimeout(() => revealLetterParagraphs(), 600);
-    }, 1200);
   }
 
   // Bind envelope interactions
-  openBtn.addEventListener('click', openEnvelope);
-  envelope.addEventListener('click', openEnvelope);
-  envelope.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      openEnvelope();
-    }
-  });
+  if (openBtn) {
+    openBtn.addEventListener('click', () => dismissIntro({ skipAnimation: false, targetFocusSelector: '#hero-heading' }));
+  }
+
+  if (envelopeBtn) {
+    envelopeBtn.addEventListener('click', () => dismissIntro({ skipAnimation: false, targetFocusSelector: '#hero-heading' }));
+  }
+
+  // Dedicated skip button inside intro
+  if (introSkipBtn) {
+    introSkipBtn.addEventListener('click', () => {
+      dismissIntro({ skipAnimation: true, targetFocusSelector: '#apology-heading' });
+    });
+  }
+
+  // Global skip link: if activated while intro is up, immediately skip to apology
+  if (globalSkipLink) {
+    globalSkipLink.addEventListener('click', (e) => {
+      if (!isEnvelopeOpened) {
+        dismissIntro({ skipAnimation: true, targetFocusSelector: '#apology-heading' });
+      }
+    });
+  }
 
   // =====================================================
-  // SPAWN BURST PARTICLES (reusable)
+  // 3. APOLOGY LETTER REVEALS (Progressive Enhancement)
+  // =====================================================
+  function triggerLetterReveal() {
+    if (letterRevealed || !letterText) return;
+    letterRevealed = true;
+
+    const paragraphs = $$('.letter-para', letterText);
+    if (!paragraphs.length) return;
+
+    if (prefersReducedMotion()) {
+      paragraphs.forEach((p) => p.classList.add('revealed'));
+      return;
+    }
+
+    // Opt into the progressive reveal styling
+    letterText.classList.add('js-letter-reveals');
+
+    // Stagger reveal paragraphs gently
+    paragraphs.forEach((p, idx) => {
+      setTimeout(() => {
+        p.classList.add('revealed');
+      }, idx * 160);
+    });
+
+    // Safety net: Guarantee all paragraphs are visible within 2.5s regardless of any delay
+    setTimeout(() => {
+      paragraphs.forEach((p) => p.classList.add('revealed'));
+    }, 2500);
+  }
+
+  function initLetterObserver() {
+    if (!letterText) return;
+
+    if (!('IntersectionObserver' in window)) {
+      triggerLetterReveal();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            triggerLetterReveal();
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(letterText);
+  }
+
+  // =====================================================
+  // 4. SHARED PARTICLE EMITTER (Bounded & Self-Cleaning)
   // =====================================================
   function spawnBurstParticles(anchorEl, count, emojis) {
+    if (prefersReducedMotion() || !anchorEl) return;
+
     const rect = anchorEl.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
 
-    for (let i = 0; i < count; i++) {
+    const fragment = document.createDocumentFragment();
+    const particleElements = [];
+
+    const effectiveCount = Math.min(count, 28);
+    for (let i = 0; i < effectiveCount; i++) {
       const span = document.createElement('span');
       span.className = 'burst-heart';
       span.textContent = emojis[Math.floor(rand(0, emojis.length))];
       span.setAttribute('aria-hidden', 'true');
-      const angle = (Math.PI * 2 * i) / count + rand(-0.3, 0.3);
-      const dist = rand(80, 200);
+
+      const angle = (Math.PI * 2 * i) / effectiveCount + rand(-0.25, 0.25);
+      const dist = rand(60, Math.min(window.innerWidth, window.innerHeight) * 0.38);
       const tx = Math.cos(angle) * dist;
       const ty = Math.sin(angle) * dist;
-      const size = rand(1, 2.2);
+      const size = rand(0.9, 1.8);
+      const duration = rand(1.6, 2.6);
 
-      span.style.left = cx + 'px';
-      span.style.top = cy + 'px';
-      span.style.fontSize = size + 'rem';
-      span.style.setProperty('--tx', tx + 'px');
-      span.style.setProperty('--ty', ty + 'px');
-      span.style.animation = `burstFlyCustom ${rand(1.5, 3)}s ease-out forwards`;
+      span.style.left = `${cx}px`;
+      span.style.top = `${cy}px`;
+      span.style.fontSize = `${size}rem`;
+      span.style.setProperty('--tx', `${tx}px`);
+      span.style.setProperty('--ty', `${ty}px`);
+      span.style.animation = `burstParticleMotion ${duration}s cubic-bezier(0.16, 1, 0.3, 1) forwards`;
 
-      document.body.appendChild(span);
-      activeAnimElements.push(span);
-
-      // Clean up
-      setTimeout(() => {
+      // Memory-safe cleanup via animationend event
+      const cleanup = () => {
+        span.removeEventListener('animationend', cleanup);
         span.remove();
-        activeAnimElements = activeAnimElements.filter((el) => el !== span);
-      }, 3200);
+      };
+      span.addEventListener('animationend', cleanup, { once: true });
+
+      // Fallback timer if animationend doesn't trigger
+      setTimeout(cleanup, duration * 1000 + 300);
+
+      fragment.appendChild(span);
+      particleElements.push(span);
     }
-  }
 
-  // Add dynamic keyframes for burst
-  const burstStyle = document.createElement('style');
-  burstStyle.textContent = `
-    @keyframes burstFlyCustom {
-      0% { transform: translate(0, 0) scale(0) rotate(0deg); opacity: 0; }
-      15% { opacity: 1; transform: translate(0, 0) scale(1.2) rotate(15deg); }
-      100% { transform: translate(var(--tx), var(--ty)) scale(0.3) rotate(360deg); opacity: 0; }
-    }
-  `;
-  document.head.appendChild(burstStyle);
-
-  // =====================================================
-  // SCROLL REVEAL (IntersectionObserver)
-  // =====================================================
-  function initScrollReveal() {
-    const reveals = $$('.reveal');
-    if (!reveals.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-    );
-
-    reveals.forEach((el) => observer.observe(el));
+    document.body.appendChild(fragment);
   }
 
   // =====================================================
-  // LETTER PARAGRAPH LINE-BY-LINE REVEAL
+  // 5. FRIENDSHIP REPAIR ACTIONS (Thoughtful, Non-quantified)
   // =====================================================
-  function revealLetterParagraphs() {
-    const paragraphs = $$('p', letterText);
-    paragraphs.forEach((p, i) => {
-      setTimeout(() => {
-        p.classList.add('revealed');
-      }, i * 250);
+  function setActionCooldown(button, durationMs = 1500) {
+    if (!button) return;
+    button.disabled = true;
+    button.setAttribute('aria-busy', 'true');
+
+    if (runningActionTimeouts.has(button)) {
+      clearTimeout(runningActionTimeouts.get(button));
+    }
+
+    const timeoutId = setTimeout(() => {
+      button.disabled = false;
+      button.removeAttribute('aria-busy');
+      runningActionTimeouts.delete(button);
+    }, durationMs);
+
+    runningActionTimeouts.set(button, timeoutId);
+  }
+
+  function displayGameMessage(text) {
+    if (!gameMessage) return;
+    gameMessage.classList.remove('visible');
+    // Force reflow for restart transition
+    void gameMessage.offsetHeight;
+    gameMessage.textContent = text;
+    gameMessage.classList.add('visible');
+  }
+
+  function highlightStatusDots(activeIndex) {
+    statusIndicators.forEach((dot, idx) => {
+      if (idx <= activeIndex) {
+        dot.classList.add('active');
+      }
     });
   }
 
-  // Also trigger on scroll visibility
-  function initLetterObserver() {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            revealLetterParagraphs();
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-    if (letterText) observer.observe(letterText);
+  // Action 1: Deploy Virtual Chocolates
+  function deployChocolates() {
+    setActionCooldown(btnChoco, 1400);
+
+    if (!prefersReducedMotion()) {
+      const emojis = ['🍫', '🍫', '🍬', '🍩', '🍫'];
+      const fragment = document.createDocumentFragment();
+      const count = window.innerWidth < 600 ? 5 : 8;
+
+      for (let i = 0; i < count; i++) {
+        const span = document.createElement('span');
+        span.className = 'falling-item';
+        span.textContent = emojis[Math.floor(rand(0, emojis.length))];
+        span.setAttribute('aria-hidden', 'true');
+        span.style.left = `${rand(12, 88)}%`;
+        span.style.animationDelay = `${rand(0, 0.4)}s`;
+        span.style.animationDuration = `${rand(2.2, 3.2)}s`;
+
+        const cleanup = () => {
+          span.removeEventListener('animationend', cleanup);
+          span.remove();
+        };
+        span.addEventListener('animationend', cleanup, { once: true });
+        setTimeout(cleanup, 3600);
+
+        fragment.appendChild(span);
+      }
+      document.body.appendChild(fragment);
+    }
+
+    highlightStatusDots(1);
+    displayGameMessage('Chocolate delivered. Unfortunately, accountability cannot be outsourced. 🍫');
+  }
+
+  // Action 2: Send a Tiny Army of Hugs
+  function sendHugs() {
+    setActionCooldown(btnHug, 1400);
+
+    if (!prefersReducedMotion() && btnHug) {
+      const emojis = ['🧸', '🫶', '💗', '🤗', '💕'];
+      const rect = btnHug.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const fragment = document.createDocumentFragment();
+      const count = window.innerWidth < 600 ? 5 : 8;
+
+      for (let i = 0; i < count; i++) {
+        const span = document.createElement('span');
+        span.className = 'hug-item';
+        span.textContent = emojis[Math.floor(rand(0, emojis.length))];
+        span.setAttribute('aria-hidden', 'true');
+        span.style.left = `${cx + rand(-90, 90)}px`;
+        span.style.top = `${cy + rand(-40, 40)}px`;
+        span.style.animationDelay = `${rand(0, 0.3)}s`;
+
+        const cleanup = () => {
+          span.removeEventListener('animationend', cleanup);
+          span.remove();
+        };
+        span.addEventListener('animationend', cleanup, { once: true });
+        setTimeout(cleanup, 3200);
+
+        fragment.appendChild(span);
+      }
+      document.body.appendChild(fragment);
+    }
+
+    highlightStatusDots(1);
+    displayGameMessage('A tiny virtual hug, only if you want one. No pressure. 🫶');
+  }
+
+  // Action 3: Activate Puppy Eyes
+  function activatePuppyEyes() {
+    setActionCooldown(btnPuppy, 1600);
+
+    if (apologyCharacter) {
+      apologyCharacter.classList.add('puppy-mode');
+      setTimeout(() => {
+        apologyCharacter.classList.remove('puppy-mode');
+      }, 3500);
+    }
+
+    highlightStatusDots(2);
+    displayGameMessage('This expression has absolutely zero legal power. My apology still stands. 🥹');
+  }
+
+  // Bind mini-game events
+  if (btnChoco) btnChoco.addEventListener('click', deployChocolates);
+  if (btnHug) btnHug.addEventListener('click', sendHugs);
+  if (btnPuppy) btnPuppy.addEventListener('click', activatePuppyEyes);
+
+  // =====================================================
+  // 6. FINAL HEART BURST (Gentle Goodbye)
+  // =====================================================
+  function triggerHeartBurst() {
+    if (heartBurstFired || !heartBurstBtn) return;
+    heartBurstFired = true;
+
+    heartBurstBtn.disabled = true;
+    heartBurstBtn.setAttribute('aria-disabled', 'true');
+    heartBurstBtn.textContent = '💗 Sent with love ✨';
+
+    if (!prefersReducedMotion()) {
+      const emojis = ['💗', '💖', '✨', '💕', '⭐', '🌸', '♡', '🌷'];
+      spawnBurstParticles(heartBurstBtn, 24, emojis);
+    }
+
+    setTimeout(() => {
+      if (finalAftermath) {
+        finalAftermath.classList.add('visible');
+      }
+    }, 600);
+  }
+
+  if (heartBurstBtn) {
+    heartBurstBtn.addEventListener('click', triggerHeartBurst);
   }
 
   // =====================================================
-  // CARD TILT EFFECT (desktop only)
+  // 7. CARD HOVER / TILT (Desktop non-touch only)
   // =====================================================
   function initCardTilt() {
     if (prefersReducedMotion()) return;
-    const isTouchDevice =
-      'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    if (isTouchDevice) return;
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouch) return;
 
     const cards = $$('.improve-card');
     cards.forEach((card) => {
@@ -206,8 +425,8 @@
         const y = e.clientY - rect.top;
         const cx = rect.width / 2;
         const cy = rect.height / 2;
-        const rotateX = ((y - cy) / cy) * -5;
-        const rotateY = ((x - cx) / cx) * 5;
+        const rotateX = ((y - cy) / cy) * -4;
+        const rotateY = ((x - cx) / cx) * 4;
         card.style.transform = `translateY(-6px) perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
       });
 
@@ -218,240 +437,48 @@
   }
 
   // =====================================================
-  // MINI-GAME: CHOCOLATE
+  // 8. SCROLL REVEALS (IntersectionObserver)
   // =====================================================
-  function deployChocolates() {
-    if (isGameCooldown) return;
-    isGameCooldown = true;
+  function initScrollReveal() {
+    const reveals = $$('.reveal');
+    if (!reveals.length) return;
 
-    if (!prefersReducedMotion()) {
-      const emojis = ['🍫', '🍫', '🍫', '🍬', '🍩'];
-      for (let i = 0; i < 8; i++) {
-        const span = document.createElement('span');
-        span.className = 'falling-item';
-        span.textContent = emojis[Math.floor(rand(0, emojis.length))];
-        span.setAttribute('aria-hidden', 'true');
-        span.style.left = rand(10, 90) + '%';
-        span.style.animationDelay = rand(0, 0.8) + 's';
-        span.style.animationDuration = rand(2.5, 4) + 's';
-        document.body.appendChild(span);
-        activeAnimElements.push(span);
-
-        setTimeout(() => {
-          span.remove();
-          activeAnimElements = activeAnimElements.filter((el) => el !== span);
-        }, 5000);
-      }
+    if (!('IntersectionObserver' in window)) {
+      reveals.forEach((el) => el.classList.add('revealed'));
+      return;
     }
 
-    updateRepairProgress(12);
-    showGameMessage(
-      'Chocolate delivery complete. Unfortunately, I cannot bribe my way out of being wrong. 🍫'
+    // Signal CSS that scroll observation is active
+    document.body.classList.add('js-reveal-ready');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
     );
 
-    setTimeout(() => {
-      isGameCooldown = false;
-    }, 1500);
+    reveals.forEach((el) => observer.observe(el));
   }
 
   // =====================================================
-  // MINI-GAME: HUGS
-  // =====================================================
-  function sendHugs() {
-    if (isGameCooldown) return;
-    isGameCooldown = true;
-
-    if (!prefersReducedMotion()) {
-      const emojis = ['🧸', '🫶', '💗', '🤗', '💕'];
-      const gameWrapper = $('.game-wrapper');
-      const rect = gameWrapper.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-
-      for (let i = 0; i < 10; i++) {
-        const span = document.createElement('span');
-        span.className = 'hug-item';
-        span.textContent = emojis[Math.floor(rand(0, emojis.length))];
-        span.setAttribute('aria-hidden', 'true');
-        span.style.left = cx + rand(-120, 120) + 'px';
-        span.style.top = cy + rand(-80, 80) + 'px';
-        span.style.animationDelay = rand(0, 0.6) + 's';
-        document.body.appendChild(span);
-        activeAnimElements.push(span);
-
-        setTimeout(() => {
-          span.remove();
-          activeAnimElements = activeAnimElements.filter((el) => el !== span);
-        }, 4000);
-      }
-    }
-
-    updateRepairProgress(10);
-    showGameMessage(
-      'Sending a virtual hug, only if you want one. No pressure. 🫶'
-    );
-
-    setTimeout(() => {
-      isGameCooldown = false;
-    }, 1500);
-  }
-
-  // =====================================================
-  // MINI-GAME: PUPPY EYES
-  // =====================================================
-  function activatePuppyEyes() {
-    if (isGameCooldown) return;
-    isGameCooldown = true;
-
-    // Add puppy mode to character
-    if (apologyCharacter) {
-      apologyCharacter.classList.add('puppy-mode');
-      setTimeout(() => {
-        apologyCharacter.classList.remove('puppy-mode');
-      }, 4000);
-    }
-
-    // Also spawn a few pleading emojis
-    if (!prefersReducedMotion()) {
-      const emojis = ['🥹', '🥺', '👉👈', '😢'];
-      for (let i = 0; i < 5; i++) {
-        const span = document.createElement('span');
-        span.className = 'hug-item';
-        span.textContent = emojis[Math.floor(rand(0, emojis.length))];
-        span.setAttribute('aria-hidden', 'true');
-        span.style.left = rand(20, 80) + '%';
-        span.style.top = rand(30, 70) + '%';
-        span.style.animationDelay = rand(0, 0.5) + 's';
-        document.body.appendChild(span);
-        activeAnimElements.push(span);
-
-        setTimeout(() => {
-          span.remove();
-          activeAnimElements = activeAnimElements.filter((el) => el !== span);
-        }, 4000);
-      }
-    }
-
-    updateRepairProgress(8);
-    showGameMessage(
-      'This expression has zero legal power. My apology still stands. 🥹'
-    );
-
-    setTimeout(() => {
-      isGameCooldown = false;
-    }, 1500);
-  }
-
-  // ---- Game helpers ----
-  function updateRepairProgress(add) {
-    repairProgress = Math.min(repairProgress + add, 85);
-    repairFill.style.width = repairProgress + '%';
-
-    const bar = repairFill.parentElement;
-    bar.setAttribute('aria-valuenow', repairProgress);
-
-    if (repairProgress >= 85) {
-      repairLabel.textContent =
-        'Repair status: Getting there… but only you get to decide. 💗';
-    } else if (repairProgress >= 50) {
-      repairLabel.textContent =
-        'Repair status: Making progress… maybe?';
-    } else if (repairProgress >= 30) {
-      repairLabel.textContent =
-        'Repair status: Still working on it…';
-    }
-  }
-
-  function showGameMessage(msg) {
-    gameMessage.classList.remove('visible');
-    // Force reflow to restart transition
-    void gameMessage.offsetHeight;
-    gameMessage.textContent = msg;
-    gameMessage.classList.add('visible');
-  }
-
-  // Bind mini-game buttons
-  btnChoco.addEventListener('click', deployChocolates);
-  btnHug.addEventListener('click', sendHugs);
-  btnPuppy.addEventListener('click', activatePuppyEyes);
-
-  // =====================================================
-  // HEART BURST (Final Section)
-  // =====================================================
-  function triggerHeartBurst() {
-    if (!prefersReducedMotion()) {
-      const emojis = ['💗', '💖', '✨', '💕', '⭐', '🌸', '♡', '💛', '💜'];
-      const cx = window.innerWidth / 2;
-      const cy = window.innerHeight / 2;
-
-      // Large center burst
-      for (let i = 0; i < 30; i++) {
-        const span = document.createElement('span');
-        span.className = 'burst-heart';
-        span.textContent = emojis[Math.floor(rand(0, emojis.length))];
-        span.setAttribute('aria-hidden', 'true');
-        const angle = (Math.PI * 2 * i) / 30 + rand(-0.2, 0.2);
-        const dist = rand(60, Math.min(window.innerWidth, window.innerHeight) * 0.45);
-        const tx = Math.cos(angle) * dist;
-        const ty = Math.sin(angle) * dist;
-        const size = rand(0.8, 2.5);
-
-        span.style.left = cx + 'px';
-        span.style.top = cy + 'px';
-        span.style.fontSize = size + 'rem';
-        span.style.setProperty('--tx', tx + 'px');
-        span.style.setProperty('--ty', ty + 'px');
-        span.style.animation = `burstFlyCustom ${rand(2, 4)}s ease-out forwards`;
-        span.style.animationDelay = rand(0, 0.5) + 's';
-
-        document.body.appendChild(span);
-        activeAnimElements.push(span);
-
-        setTimeout(() => {
-          span.remove();
-          activeAnimElements = activeAnimElements.filter((el) => el !== span);
-        }, 5000);
-      }
-    }
-
-    // Show aftermath message
-    setTimeout(() => {
-      finalAftermath.classList.add('visible');
-    }, 800);
-
-    // Update button state
-    heartBurstBtn.textContent = '💗 Sent with love ✨';
-    heartBurstBtn.style.opacity = '0.7';
-    heartBurstBtn.style.pointerEvents = 'none';
-    heartBurstFired = true;
-  }
-
-  heartBurstBtn.addEventListener('click', () => {
-    if (heartBurstFired) return;
-    triggerHeartBurst();
-  });
-
-  // =====================================================
-  // INIT
+  // 9. INITIALIZATION
   // =====================================================
   function init() {
-    // Prevent scroll while intro is active
-    document.body.style.overflow = 'hidden';
+    // Flag body that JS intro is active
+    document.body.classList.add('js-intro-active');
 
-    // Create intro particles
-    createIntroParticles();
-
-    // Init scroll reveal
+    initIntroParticles();
     initScrollReveal();
-
-    // Init letter observer
     initLetterObserver();
-
-    // Init card tilt
     initCardTilt();
   }
 
-  // Run on DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
