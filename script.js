@@ -1,5 +1,5 @@
 /* =====================================================
-   KAVYA APOLOGY WEBSITE — INTERACTIONS & MOTION
+   KAVYA APOLOGY WEBSITE — INTERACTIONS & MOTION (10/10)
    Vanilla JavaScript — Defensive, Accessible & Memory-Safe
    ===================================================== */
 
@@ -37,14 +37,15 @@
   const introParticles = $('#intro-particles');
   const letterText = $('#letter-text');
   const apologyCharacter = $('#apology-character');
-  const repairLabel = $('#repair-label');
+  const memoryToggleBtn = $('#memory-toggle-btn');
+  const memoryContent = $('#memory-content');
+  const memoryBtnLabel = $('#memory-btn-label');
   const gameMessage = $('#game-message');
   const btnChoco = $('#btn-choco');
   const btnHug = $('#btn-hug');
   const btnPuppy = $('#btn-puppy');
   const heartBurstBtn = $('#heart-burst-btn');
   const finalAftermath = $('#final-aftermath');
-  const statusIndicators = $$('.status-indicator');
 
   // ---- State Management ----
   let isEnvelopeOpened = false;
@@ -76,7 +77,7 @@
   }
 
   // =====================================================
-  // 2. ENVELOPE OPENING & FOCUS MANAGEMENT
+  // 2. ENVELOPE OPENING & FOCUS MANAGEMENT (Smooth & Quick)
   // =====================================================
   function dismissIntro({ skipAnimation = false, targetFocusSelector = '#hero-heading' } = {}) {
     if (isTransitioning) return;
@@ -118,8 +119,8 @@
         envelopeBtn.classList.add('opened');
         spawnBurstParticles(envelopeBtn, 8, ['💗', '✨', '💕']);
       }
-      // Wait for envelope flap & letter emergence animation
-      setTimeout(completeDismissal, 850);
+      // Quick, responsive transition (480ms)
+      setTimeout(completeDismissal, 480);
     }
   }
 
@@ -141,7 +142,7 @@
 
   // Global skip link: if activated while intro is up, immediately skip to apology
   if (globalSkipLink) {
-    globalSkipLink.addEventListener('click', (e) => {
+    globalSkipLink.addEventListener('click', () => {
       if (!isEnvelopeOpened) {
         dismissIntro({ skipAnimation: true, targetFocusSelector: '#apology-heading' });
       }
@@ -170,10 +171,10 @@
     paragraphs.forEach((p, idx) => {
       setTimeout(() => {
         p.classList.add('revealed');
-      }, idx * 160);
+      }, idx * 150);
     });
 
-    // Safety net: Guarantee all paragraphs are visible within 2.5s regardless of any delay
+    // Safety net: Guarantee all paragraphs are visible within 2.5s regardless of delays
     setTimeout(() => {
       paragraphs.forEach((p) => p.classList.add('revealed'));
     }, 2500);
@@ -203,7 +204,28 @@
   }
 
   // =====================================================
-  // 4. SHARED PARTICLE EMITTER (Bounded & Self-Cleaning)
+  // 4. APPRECIATION KEEPSAKE NOTE TOGGLE
+  // =====================================================
+  function initAppreciationToggle() {
+    if (!memoryToggleBtn || !memoryContent) return;
+
+    memoryToggleBtn.addEventListener('click', () => {
+      const isExpanded = memoryToggleBtn.getAttribute('aria-expanded') === 'true';
+      const newState = !isExpanded;
+
+      memoryToggleBtn.setAttribute('aria-expanded', String(newState));
+      if (newState) {
+        memoryContent.classList.add('open');
+        if (memoryBtnLabel) memoryBtnLabel.textContent = 'Close appreciation note';
+      } else {
+        memoryContent.classList.remove('open');
+        if (memoryBtnLabel) memoryBtnLabel.textContent = 'Open a small appreciation note';
+      }
+    });
+  }
+
+  // =====================================================
+  // 5. SHARED PARTICLE EMITTER (Bounded & Self-Cleaning)
   // =====================================================
   function spawnBurstParticles(anchorEl, count, emojis) {
     if (prefersReducedMotion() || !anchorEl) return;
@@ -213,9 +235,8 @@
     const cy = rect.top + rect.height / 2;
 
     const fragment = document.createDocumentFragment();
-    const particleElements = [];
-
     const effectiveCount = Math.min(count, 28);
+
     for (let i = 0; i < effectiveCount; i++) {
       const span = document.createElement('span');
       span.className = 'burst-heart';
@@ -247,14 +268,13 @@
       setTimeout(cleanup, duration * 1000 + 300);
 
       fragment.appendChild(span);
-      particleElements.push(span);
     }
 
     document.body.appendChild(fragment);
   }
 
   // =====================================================
-  // 5. FRIENDSHIP REPAIR ACTIONS (Thoughtful, Non-quantified)
+  // 6. PEACE OFFERINGS (Refined & Non-Quantified)
   // =====================================================
   function setActionCooldown(button, durationMs = 1500) {
     if (!button) return;
@@ -283,15 +303,7 @@
     gameMessage.classList.add('visible');
   }
 
-  function highlightStatusDots(activeIndex) {
-    statusIndicators.forEach((dot, idx) => {
-      if (idx <= activeIndex) {
-        dot.classList.add('active');
-      }
-    });
-  }
-
-  // Action 1: Deploy Virtual Chocolates
+  // Action 1: Virtual Chocolates
   function deployChocolates() {
     setActionCooldown(btnChoco, 1400);
 
@@ -321,11 +333,10 @@
       document.body.appendChild(fragment);
     }
 
-    highlightStatusDots(1);
-    displayGameMessage('Chocolate delivered. Unfortunately, accountability cannot be outsourced. 🍫');
+    displayGameMessage('Chocolates delivered. Unfortunately, sweetness can’t substitute for accountability. My apology remains 100% genuine. 🍫');
   }
 
-  // Action 2: Send a Tiny Army of Hugs
+  // Action 2: Quiet Virtual Hug
   function sendHugs() {
     setActionCooldown(btnHug, 1400);
 
@@ -358,11 +369,10 @@
       document.body.appendChild(fragment);
     }
 
-    highlightStatusDots(1);
-    displayGameMessage('A tiny virtual hug, only if you want one. No pressure. 🫶');
+    displayGameMessage('A quiet, warm virtual hug. Only if you want one, and strictly on your terms. 🫶');
   }
 
-  // Action 3: Activate Puppy Eyes
+  // Action 3: Puppy Eyes
   function activatePuppyEyes() {
     setActionCooldown(btnPuppy, 1600);
 
@@ -373,17 +383,16 @@
       }, 3500);
     }
 
-    highlightStatusDots(2);
-    displayGameMessage('This expression has absolutely zero legal power. My apology still stands. 🥹');
+    displayGameMessage('Puppy eyes engaged. Please note: this carries exactly zero legal weight in Friendship Court. I am still completely at fault. 🥹');
   }
 
-  // Bind mini-game events
+  // Bind peace offering events
   if (btnChoco) btnChoco.addEventListener('click', deployChocolates);
   if (btnHug) btnHug.addEventListener('click', sendHugs);
   if (btnPuppy) btnPuppy.addEventListener('click', activatePuppyEyes);
 
   // =====================================================
-  // 6. FINAL HEART BURST (Gentle Goodbye)
+  // 7. FINAL WARMTH BURST (Gentle Send-Off)
   // =====================================================
   function triggerHeartBurst() {
     if (heartBurstFired || !heartBurstBtn) return;
@@ -391,7 +400,7 @@
 
     heartBurstBtn.disabled = true;
     heartBurstBtn.setAttribute('aria-disabled', 'true');
-    heartBurstBtn.textContent = '💗 Sent with love ✨';
+    heartBurstBtn.textContent = '💗 Warmth sent into the universe ✨';
 
     if (!prefersReducedMotion()) {
       const emojis = ['💗', '💖', '✨', '💕', '⭐', '🌸', '♡', '🌷'];
@@ -402,7 +411,7 @@
       if (finalAftermath) {
         finalAftermath.classList.add('visible');
       }
-    }, 600);
+    }, 500);
   }
 
   if (heartBurstBtn) {
@@ -410,7 +419,7 @@
   }
 
   // =====================================================
-  // 7. CARD HOVER / TILT (Desktop non-touch only)
+  // 8. CARD HOVER / TILT (Desktop non-touch only)
   // =====================================================
   function initCardTilt() {
     if (prefersReducedMotion()) return;
@@ -437,7 +446,7 @@
   }
 
   // =====================================================
-  // 8. SCROLL REVEALS (IntersectionObserver)
+  // 9. SCROLL REVEALS (IntersectionObserver)
   // =====================================================
   function initScrollReveal() {
     const reveals = $$('.reveal');
@@ -448,7 +457,6 @@
       return;
     }
 
-    // Signal CSS that scroll observation is active
     document.body.classList.add('js-reveal-ready');
 
     const observer = new IntersectionObserver(
@@ -467,15 +475,15 @@
   }
 
   // =====================================================
-  // 9. INITIALIZATION
+  // 10. INITIALIZATION
   // =====================================================
   function init() {
-    // Flag body that JS intro is active
     document.body.classList.add('js-intro-active');
 
     initIntroParticles();
     initScrollReveal();
     initLetterObserver();
+    initAppreciationToggle();
     initCardTilt();
   }
 

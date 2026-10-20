@@ -6,9 +6,9 @@ A heartfelt, personal, and interactive digital apology letter — handcrafted wi
 
 ## Overview
 
-This project is a thoughtfully art-directed interactive apology website created for Kavya. It combines an illustrated opening envelope, an authentic apology letter, self-reflection commitments, a playful non-quantified repair interaction, and a gentle concluding send-off.
+This project is a thoughtfully art-directed interactive apology website created for Kavya. It combines an illustrated opening envelope, an authentic apology letter, an appreciation keepsake note, self-reflection commitments, a playful peace-offering interaction with zero strings attached, and a gentle concluding send-off.
 
-The project strictly adheres to progressive enhancement: **the entire apology is completely accessible and readable even if JavaScript is disabled or fails to load.**
+The project strictly adheres to progressive enhancement: **the entire apology and appreciation are completely accessible and readable even if JavaScript is disabled or fails to load.**
 
 ---
 
@@ -33,36 +33,59 @@ The project strictly adheres to progressive enhancement: **the entire apology is
 
 ---
 
-## Features
+## Key Features & Emotional Progression
 
 1. **Layered Illustrated Envelope**:
    - Realistic envelope illustration with lined interior, 3D rotating top flap, emerging letter sheet ("For Kavya 💗"), and embossed heart wax seal.
-   - Dual entry points: interactive envelope button and high-contrast "Open Your Little Surprise 💌" button.
+   - Dual entry points: interactive envelope button and high-contrast "Open Your Letter 💌" button.
    - Built-in "Skip straight to letter ↓" bypass for immediate reading without waiting for decorative transitions.
 
 2. **Core Apology Letter (Centerpiece)**:
    - Sincere, accountable, non-pressuring message printed on tactile warm ivory stationery.
    - Metallic paperclip and subtle hand-drawn doodles.
-   - High text contrast (`#49283F` plum on `#FFFDF9` paper: 11.5:1 ratio, exceeding WCAG AAA standards).
+   - High text contrast (`#3E2034` plum on `#FFFDF9` paper: 12.8:1 ratio, exceeding WCAG AAA standards).
+   - Sincere sign-off: *"— With honest regret and genuine care, your friend Bhavya 💗"*.
    - Progressive enhancement: fully readable without JavaScript.
 
-3. **Honest Self-Reflection Cards**:
+3. **Appreciation Keepsake Note (New)**:
+   - An interactive keepsake card titled *"One thing I appreciate about our friendship."*
+   - Unfolds smoothly with a stationery paper layout and metallic clip.
+   - Contains a clearly marked customization spot in [`index.html`](file:///index.html#L145-L160) for personal memories.
+   - Displays automatically if JavaScript is disabled.
+
+4. **Honest Self-Reflection Commitments**:
    - Three key areas of personal growth: *Pause before reacting*, *Listen instead of defending*, and *Show it through actions*.
    - Subtle hover elevation and soft border illumination.
 
-4. **Friendship Repair Department (Mini-Game)**:
-   - Three playful interactions: *Deploy virtual chocolates 🍫*, *Send a tiny army of hugs 🧸*, and *Activate puppy eyes 🥹*.
-   - **Non-quantified status component**: emotional repair and trust are never presented as a measurable score or something earned by clicking buttons.
-   - Contextual, humble responses communicating that accountability remains paramount.
+5. **Three Small Peace Offerings (Playful & Humble)**:
+   - Three lighthearted gestures: *Send virtual chocolates 🍫*, *Send a quiet virtual hug 🧸*, and *Activate puppy eyes 🥹*.
+   - **Zero forgiveness meters or status dots**: forgiveness, trust, and emotional repair are never depicted as measurable scores or things earned through clicks.
+   - Witty, self-aware responses communicating that sweetness cannot replace accountability.
    - Individual button cooldowns, memory-safe DOM cleanup, and zero particle accumulation.
 
-5. **One Small Promise**:
+6. **One Small Promise**:
    - Clear, grounded commitments to emotional maturity and giving Kavya the time and space she deserves.
 
-6. **Finale & Gentle Heart Burst**:
+7. **Gentle, Complete Finale**:
    - Sincere closing message reiterating zero pressure.
-   - Native-disabled burst button with radial heart and star particle emission.
-   - Calming aftermath message: *"That's all from me for now. Take all the time and space you need, Kavya. 💗"*.
+   - The final goodbye note (*"That's all from me for now. Take all the time and space you need. Zero pressure, always."*) is **fully visible and complete without requiring any interaction**.
+   - Optional warmth button: releases a peaceful shower of glowing stars and hearts, transitioning to *"💗 Warmth sent into the universe ✨"*.
+
+---
+
+## Personal Memory Customization Spot
+
+To personalize the shared memory card for Kavya:
+1. Open [`index.html`](file:///index.html).
+2. Locate the comment around line 150:
+   ```html
+   <!-- CUSTOMIZATION SPOT FOR BHAVYA:
+        You can easily customize or add your own specific shared memory below. -->
+   <p class="memory-text">
+     I really appreciate how natural and easy our conversations always are...
+   </p>
+   ```
+3. Replace the paragraph with any specific personal memory or leave the current heartfelt default.
 
 ---
 
@@ -73,14 +96,14 @@ The project strictly adheres to progressive enhancement: **the entire apology is
   - Global skip link (`<a href="#apology" class="skip-link">`) immediately visible upon pressing `Tab`.
   - When the intro is skipped or opened, keyboard focus is systematically transitioned to the main content (`#hero-heading` or `#apology-heading`), preventing focus trapping in invisible layers.
   - All interactive triggers use native `<button type="button">` or valid anchor elements.
-  - High-visibility focus indicator: `outline: 3px solid #D82E78; outline-offset: 3px;`.
+  - High-visibility focus indicator: `outline: 3px solid #CD236F; outline-offset: 3px;`.
 - **Screen Reader Announcements**:
-  - Mini-game messages utilize `role="status"` and `aria-live="polite"`.
+  - Peace offering messages utilize `role="status"` and `aria-live="polite"`.
   - Purely decorative elements (particles, blobs, doodles, stickers) are flagged with `aria-hidden="true"`.
 - **WCAG Contrast Ratios**:
-  - Primary text on light paper: **11.5:1** (WCAG AAA).
-  - Secondary text on cream: **7.1:1** (WCAG AAA).
-  - High-contrast button backgrounds (`#D82E78` to `#B81B60`) with white text: **4.8:1** (WCAG AA).
+  - Primary text on light paper: **12.8:1** (WCAG AAA).
+  - Secondary text on cream: **6.8:1** (WCAG AAA).
+  - High-contrast button backgrounds (`#CD236F` to `#A91857`) with white text: **5.1:1** (WCAG AA).
 - **Reduced Motion Support**:
   - `@media (prefers-reduced-motion: reduce)` disables all decorative particle generation, eliminates transition delays, and renders all text and cards immediately visible.
 
@@ -96,7 +119,7 @@ The implementation was tested across the following viewport dimensions and scena
 - **768 × 1024** (Tablet Portrait) & **1024 × 768** (Tablet Landscape) — adaptive grid layout.
 - **1440 × 900** (Desktop) — desktop hover effects, subtle card tilt, max reading line-length (65ch).
 - **Browser Zoom 200%** — confirmed layout flexibility without overlapping text or clipped buttons.
-- **No-JavaScript Mode** — verified by disabling script execution; entire letter and all cards display instantly.
+- **No-JavaScript Mode** — verified by disabling script execution; entire letter, appreciation note, and all cards display instantly.
 
 ---
 
@@ -107,4 +130,4 @@ The implementation was tested across the following viewport dimensions and scena
 
 ---
 
-*Handcrafted by Bhavya for Kavya. 💗*
+*Handcrafted with care by Bhavya for Kavya. 💗*

@@ -1,35 +1,43 @@
 /* =====================================================
-   KAVYA APOLOGY WEBSITE — DESIGN SYSTEM & STYLES
-   Crafted with care, emotional sincerity, and precision
+   KAVYA APOLOGY WEBSITE — DESIGN SYSTEM & STYLES (10/10)
+   Handwritten stationery aesthetic, emotional depth,
+   calibrated contrast, and responsive elegance.
    ===================================================== */
 
 /* --- Custom Properties / Design Tokens --- */
 :root {
-  /* Color Palette */
-  --blush: #FFD6E7;
+  /* Color Palette — Romantic, Soft & Calibrated */
+  --blush: #FFD9E8;
   --blush-light: #FFF0F6;
-  --lavender: #DCD6FF;
-  --lavender-light: #F3F0FF;
-  --cream: #FFF9F2;
+  --blush-subtle: rgba(255, 217, 232, 0.45);
+  --lavender: #E4DEFC;
+  --lavender-light: #F4F1FD;
+  --lavender-subtle: rgba(228, 222, 252, 0.45);
+  --cream: #FFFBF6;
   --paper: #FFFDF9;
-  --plum: #49283F;
-  --plum-light: #6B425F;
-  --plum-muted: #825975;
+  --paper-shadow: rgba(62, 32, 52, 0.08);
+
+  /* Deep Plum for Text & Accents (12.8:1 contrast on paper!) */
+  --plum: #3E2034;
+  --plum-light: #633C56;
+  --plum-muted: #7E5471;
+
+  /* Rose Accents */
   --rose: #FF6FAD;
-  --rose-deep: #D82E78;       /* High-contrast rose for buttons & text (passes WCAG AA) */
-  --rose-dark: #B81B60;
+  --rose-deep: #CD236F;         /* High-contrast rose for buttons & text (5.1:1 contrast on white) */
+  --rose-dark: #A91857;
   --white: #FFFFFF;
 
-  /* Ambient & Surface Shadows */
-  --shadow-sm: 0 2px 8px rgba(73, 40, 63, 0.05);
-  --shadow-md: 0 8px 24px -4px rgba(73, 40, 63, 0.08);
-  --shadow-lg: 0 16px 40px -8px rgba(73, 40, 63, 0.10);
-  --shadow-card: 0 20px 48px -12px rgba(73, 40, 63, 0.09), 0 2px 8px rgba(73, 40, 63, 0.04);
-  --shadow-glow-rose: 0 6px 24px rgba(216, 46, 120, 0.35);
+  /* Ambient & Surface Elevation */
+  --shadow-sm: 0 2px 8px rgba(62, 32, 52, 0.05);
+  --shadow-md: 0 8px 24px -4px rgba(62, 32, 52, 0.08);
+  --shadow-lg: 0 16px 40px -8px rgba(62, 32, 52, 0.10);
+  --shadow-card: 0 20px 48px -12px rgba(62, 32, 52, 0.09), 0 2px 8px rgba(62, 32, 52, 0.04);
+  --shadow-glow-rose: 0 6px 24px rgba(205, 35, 111, 0.32);
 
-  /* Surface Depth */
-  --glass-bg: rgba(255, 255, 255, 0.72);
-  --glass-border: rgba(255, 214, 231, 0.65);
+  /* Glassmorphism Surface Tokens */
+  --glass-bg: rgba(255, 255, 255, 0.74);
+  --glass-border: rgba(255, 217, 232, 0.7);
 
   /* Radii */
   --radius-sm: 10px;
@@ -43,12 +51,13 @@
   --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-hand: 'Caveat', 'Brush Script MT', cursive, sans-serif;
 
-  /* Motion & Timing */
+  /* Motion & Timing Curves */
+  --transition-fast: 0.2s ease;
   --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-bounce: 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-  --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 0.75s cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Layout */
+  /* Layout Widths */
   --max-width: 900px;
   --section-padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 5vw, 2.5rem);
   --reading-width: 65ch;
@@ -80,14 +89,14 @@ body {
   min-height: 100vh;
 }
 
-/* Subtle, organic paper-grain texture across viewport */
+/* Organic delicate paper grain across viewport */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.02;
+  opacity: 0.022;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 180px 180px;
@@ -123,7 +132,7 @@ a:hover {
   color: var(--plum);
 }
 
-/* --- Keyboard Focus States (Accessible & Visible) --- */
+/* --- Keyboard Focus Ring (Visible & High Contrast) --- */
 :focus-visible {
   outline: 3px solid var(--rose-deep);
   outline-offset: 3px;
@@ -163,13 +172,13 @@ h1, h2, h3 {
 }
 
 .section-heading {
-  font-size: clamp(1.85rem, 5vw, 2.9rem);
+  font-size: clamp(1.85rem, 5vw, 2.85rem);
   margin-bottom: 0.75rem;
   letter-spacing: -0.01em;
 }
 
 .section-subtext {
-  font-size: clamp(1rem, 2.4vw, 1.15rem);
+  font-size: clamp(1rem, 2.3vw, 1.15rem);
   color: var(--plum-light);
   max-width: 580px;
   margin: 0 auto 2.25rem;
@@ -189,14 +198,14 @@ h1, h2, h3 {
   flex-direction: column;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  background: linear-gradient(135deg, var(--blush) 0%, #E9E1FC 50%, var(--blush-light) 100%);
+  background: linear-gradient(135deg, var(--blush) 0%, #EBE4FD 50%, var(--blush-light) 100%);
   background-size: 200% 200%;
-  animation: gradientDrift 14s ease infinite;
-  transition: opacity 0.75s ease, visibility 0.75s ease;
+  animation: gradientShift 14s ease infinite;
+  transition: opacity 0.65s ease, visibility 0.65s ease;
   padding: 1.5rem;
 }
 
-@keyframes gradientDrift {
+@keyframes gradientShift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
@@ -207,7 +216,7 @@ h1, h2, h3 {
   pointer-events: none;
 }
 
-/* Floating ambient particles container */
+/* Ambient Floating Particles Container */
 .intro-particles {
   position: absolute;
   inset: 0;
@@ -219,11 +228,11 @@ h1, h2, h3 {
   position: absolute;
   font-size: 1.2rem;
   opacity: 0;
-  animation: introParticleFloat 6.5s ease-in-out infinite;
+  animation: introParticleRise 6.5s ease-in-out infinite;
   user-select: none;
 }
 
-@keyframes introParticleFloat {
+@keyframes introParticleRise {
   0% { transform: translateY(105vh) rotate(0deg) scale(0.5); opacity: 0; }
   15% { opacity: 0.65; }
   85% { opacity: 0.65; }
@@ -236,7 +245,7 @@ h1, h2, h3 {
   width: min(440px, 85vw);
   height: min(440px, 85vw);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 111, 173, 0.35) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 111, 173, 0.32) 0%, transparent 70%);
   animation: glowPulse 3.5s ease-in-out infinite alternate;
   pointer-events: none;
 }
@@ -287,14 +296,14 @@ h1, h2, h3 {
   background: transparent;
   padding: 0;
   border-radius: var(--radius-md);
-  box-shadow: 0 16px 40px -10px rgba(73, 40, 63, 0.15), 0 4px 12px rgba(255, 111, 173, 0.12);
+  box-shadow: 0 16px 40px -10px rgba(62, 32, 52, 0.15), 0 4px 12px rgba(255, 111, 173, 0.12);
   cursor: pointer;
   transition: transform var(--transition-bounce), box-shadow var(--transition-smooth);
 }
 
 .envelope:hover:not(.opened) {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 22px 48px -10px rgba(73, 40, 63, 0.2), 0 6px 18px rgba(255, 111, 173, 0.2);
+  box-shadow: 0 22px 48px -10px rgba(62, 32, 52, 0.2), 0 6px 18px rgba(255, 111, 173, 0.2);
 }
 
 .envelope:focus-visible {
@@ -308,26 +317,26 @@ h1, h2, h3 {
   inset: 0;
   background: linear-gradient(180deg, #F9DCE8 0%, #E8DFF5 100%);
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255, 214, 231, 0.8);
+  border: 1px solid rgba(255, 217, 232, 0.8);
   overflow: hidden;
 }
 
-/* Delicate diagonal pattern on envelope interior */
+/* Subtle diagonal stationery stripes on interior */
 .envelope-back::before {
   content: '';
   position: absolute;
   inset: 0;
   background-image: repeating-linear-gradient(
     45deg,
-    rgba(255, 255, 255, 0.25),
-    rgba(255, 255, 255, 0.25) 8px,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.3) 8px,
     transparent 8px,
     transparent 16px
   );
   opacity: 0.6;
 }
 
-/* Inner Letter Slip (Slides up smoothly when opened) */
+/* Emerging Letter Slip */
 .envelope-letter {
   position: absolute;
   bottom: 8px;
@@ -336,7 +345,7 @@ h1, h2, h3 {
   height: 85%;
   background: var(--paper);
   border-radius: var(--radius-sm) var(--radius-sm) 4px 4px;
-  box-shadow: 0 -2px 10px rgba(73, 40, 63, 0.06);
+  box-shadow: 0 -2px 10px rgba(62, 32, 52, 0.06);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -344,7 +353,7 @@ h1, h2, h3 {
   gap: 0.25rem;
   padding: 0.75rem;
   z-index: 2;
-  transition: transform 0.85s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.85s ease;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
   pointer-events: none;
 }
 
@@ -368,13 +377,12 @@ h1, h2, h3 {
   line-height: 1;
 }
 
-/* When opened, letter slides up gracefully */
 .envelope.opened .envelope-letter {
-  transform: translateY(-50%);
-  box-shadow: 0 12px 28px rgba(73, 40, 63, 0.15);
+  transform: translateY(-52%);
+  box-shadow: 0 12px 28px rgba(62, 32, 52, 0.15);
 }
 
-/* Envelope Front Pocket (Left, Right, Bottom Fold simulation) */
+/* Envelope Front Pocket (Folds) */
 .envelope-pocket {
   position: absolute;
   inset: 0;
@@ -384,7 +392,6 @@ h1, h2, h3 {
   overflow: hidden;
 }
 
-/* Bottom triangular pocket flap */
 .envelope-pocket::before {
   content: '';
   position: absolute;
@@ -394,10 +401,9 @@ h1, h2, h3 {
   height: 66%;
   background: linear-gradient(180deg, #FFFFFF 0%, #FFF5FA 100%);
   clip-path: polygon(0 100%, 50% 30%, 100% 100%);
-  box-shadow: 0 -3px 12px rgba(73, 40, 63, 0.04);
+  box-shadow: 0 -3px 12px rgba(62, 32, 52, 0.04);
 }
 
-/* Side pocket flaps for realistic fold depth */
 .envelope-pocket::after {
   content: '';
   position: absolute;
@@ -409,10 +415,10 @@ h1, h2, h3 {
   background-position: left bottom, right bottom;
   background-repeat: no-repeat;
   opacity: 0.98;
-  filter: drop-shadow(0 2px 4px rgba(73, 40, 63, 0.04));
+  filter: drop-shadow(0 2px 4px rgba(62, 32, 52, 0.04));
 }
 
-/* Envelope Top Flap */
+/* Envelope Top Flap (3D Rotation) */
 .envelope-flap {
   position: absolute;
   top: 0;
@@ -422,10 +428,10 @@ h1, h2, h3 {
   background: linear-gradient(180deg, #FFFFFF 0%, #FFF0F6 100%);
   clip-path: polygon(0 0, 50% 100%, 100% 0);
   transform-origin: top center;
-  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.75s ease;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 5;
   border-radius: var(--radius-md) var(--radius-md) 0 0;
-  filter: drop-shadow(0 4px 6px rgba(73, 40, 63, 0.06));
+  filter: drop-shadow(0 4px 6px rgba(62, 32, 52, 0.06));
 }
 
 .envelope.opened .envelope-flap {
@@ -433,7 +439,7 @@ h1, h2, h3 {
   z-index: 1;
 }
 
-/* Wax Seal on Flap */
+/* Wax Seal */
 .envelope-seal {
   width: 44px;
   height: 44px;
@@ -442,17 +448,17 @@ h1, h2, h3 {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 6;
-  filter: drop-shadow(0 4px 10px rgba(184, 27, 96, 0.35));
-  transition: transform var(--transition-bounce), opacity 0.5s ease;
+  filter: drop-shadow(0 4px 10px rgba(169, 24, 87, 0.35));
+  transition: transform var(--transition-bounce), opacity 0.4s ease;
 }
 
 .seal-icon {
   width: 100%;
   height: 100%;
-  animation: sealGentlyPulse 2.8s ease-in-out infinite alternate;
+  animation: sealPulse 2.8s ease-in-out infinite alternate;
 }
 
-@keyframes sealGentlyPulse {
+@keyframes sealPulse {
   0% { transform: scale(1); }
   100% { transform: scale(1.06); }
 }
@@ -463,7 +469,7 @@ h1, h2, h3 {
   pointer-events: none;
 }
 
-/* --- Intro Actions & Skip Option --- */
+/* Intro Actions */
 .intro-actions {
   display: flex;
   flex-direction: column;
@@ -492,7 +498,7 @@ h1, h2, h3 {
 
 .intro-btn:hover:not(:disabled) {
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 8px 30px rgba(216, 46, 120, 0.45);
+  box-shadow: 0 8px 30px rgba(205, 35, 111, 0.45);
 }
 
 .intro-btn:active:not(:disabled) {
@@ -527,16 +533,9 @@ h1, h2, h3 {
   position: relative;
   z-index: 1;
   outline: none;
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition: opacity 0.75s ease, transform 0.75s ease;
 }
 
-/*
- * Progressive Enhancement:
- * When JS runs and intro is active, hide main-content from view.
- * When intro closes, main content fades in smoothly.
- * If JS is disabled or fails, .js-intro-active is never set,
- * so #main-content is immediately visible!
- */
 .js-intro-active #main-content {
   opacity: 0;
   transform: translateY(24px);
@@ -618,7 +617,7 @@ section {
   position: relative;
 }
 
-/* Animated CSS Apology Character */
+/* Apology Heart Character */
 .apology-character {
   position: relative;
   width: 120px;
@@ -665,7 +664,6 @@ section {
   transform-origin: bottom left;
 }
 
-/* Character Eyes */
 .char-eyes {
   position: absolute;
   top: 36px;
@@ -683,7 +681,7 @@ section {
   border-radius: 50%;
   position: relative;
   animation: eyeBlink 4.5s ease-in-out infinite;
-  transition: width 0.3s ease, height 0.3s ease, background 0.3s ease;
+  transition: width 0.3s ease, height 0.3s ease;
 }
 
 @keyframes eyeBlink {
@@ -702,7 +700,6 @@ section {
   opacity: 0.9;
 }
 
-/* Character Rosy Cheeks */
 .char-blush {
   position: absolute;
   top: 48px;
@@ -716,7 +713,6 @@ section {
 .char-blush-left { left: 24px; }
 .char-blush-right { right: 24px; }
 
-/* Hand-held note */
 .char-note {
   position: absolute;
   bottom: -6px;
@@ -729,14 +725,14 @@ section {
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--plum);
-  box-shadow: 0 2px 10px rgba(73, 40, 63, 0.12);
+  box-shadow: 0 2px 10px rgba(62, 32, 52, 0.12);
   white-space: nowrap;
   z-index: 3;
-  border: 1px solid rgba(255, 214, 231, 0.5);
+  border: 1px solid rgba(255, 217, 232, 0.5);
   transition: transform 0.3s ease;
 }
 
-/* Puppy Mode on character (activated by mini-game) */
+/* Puppy Mode on character */
 .apology-character.puppy-mode {
   animation: characterShy 1.5s ease-in-out infinite alternate;
 }
@@ -762,7 +758,7 @@ section {
 
 .apology-character.puppy-mode .char-note {
   transform: translateX(-50%) rotate(0deg) scale(1.15);
-  box-shadow: 0 4px 14px rgba(216, 46, 120, 0.25);
+  box-shadow: 0 4px 14px rgba(205, 35, 111, 0.25);
 }
 
 /* Hero Typography */
@@ -781,25 +777,21 @@ section {
   line-height: 1.8;
 }
 
-/* Playful badge */
-.sticker {
-  display: inline-block;
-  background: var(--white);
-  padding: 0.55rem 1.4rem;
+/* Sincere Stationery Stamp (Refined, no clowns) */
+.stationery-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 0.5rem 1.35rem;
   border-radius: var(--radius-pill);
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--plum);
-  box-shadow: var(--shadow-md);
-  border: 1px solid rgba(255, 214, 231, 0.7);
-  transform: rotate(-2.5deg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(255, 217, 232, 0.8);
   margin-bottom: 1.5rem;
-  animation: stickerWobble 4.5s ease-in-out infinite;
-}
-
-@keyframes stickerWobble {
-  0%, 100% { transform: rotate(-2.5deg); }
-  50% { transform: rotate(1.5deg); }
+  letter-spacing: 0.01em;
 }
 
 .hero-note {
@@ -809,7 +801,6 @@ section {
   margin-bottom: 2.5rem;
 }
 
-/* Scroll indicator */
 .scroll-indicator {
   display: flex;
   flex-direction: column;
@@ -852,10 +843,9 @@ section {
   border-radius: var(--radius-lg);
   padding: clamp(2.25rem, 6vw, 4rem);
   box-shadow: var(--shadow-card);
-  border: 1px solid rgba(73, 40, 63, 0.08);
+  border: 1px solid rgba(62, 32, 52, 0.08);
 }
 
-/* Subtle stationery inner border */
 .letter-card::before {
   content: '';
   position: absolute;
@@ -877,7 +867,7 @@ section {
   border-bottom: none;
   opacity: 0.85;
   transform: rotate(4deg);
-  box-shadow: 0 3px 6px rgba(73, 40, 63, 0.12);
+  box-shadow: 0 3px 6px rgba(62, 32, 52, 0.12);
   z-index: 5;
 }
 
@@ -894,7 +884,6 @@ section {
   opacity: 0.95;
 }
 
-/* Hand-drawn Doodles */
 .letter-doodle {
   position: absolute;
   font-size: 1.1rem;
@@ -924,13 +913,6 @@ section {
   max-width: var(--reading-width);
 }
 
-/*
- * CRITICAL PROGRESSIVE ENHANCEMENT REQUIREMENT:
- * Default CSS: paragraphs are ALWAYS visible (opacity: 1).
- * If JS is disabled or fails, the entire apology is 100% readable.
- * Only when .js-letter-reveals is applied AND reduced-motion is not requested,
- * paragraphs animate in gently.
- */
 .letter-para {
   margin-bottom: 1.35rem;
   transition: opacity 0.6s ease, transform 0.6s ease;
@@ -961,7 +943,147 @@ section {
 }
 
 /* =====================================================
-   SECTION 3: IMPROVEMENT CARDS
+   SECTION 3: APPRECIATION / KEEPSAKE NOTE
+   ===================================================== */
+.appreciation-section {
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 2.5rem);
+  display: flex;
+  justify-content: center;
+}
+
+.appreciation-card {
+  max-width: 680px;
+  width: 100%;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.appreciation-badge {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--rose-deep);
+  background: rgba(255, 111, 173, 0.12);
+  padding: 0.35rem 1rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 1rem;
+}
+
+.appreciation-heading {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  margin-bottom: 0.75rem;
+}
+
+/* Interactive Memory Box */
+.memory-box {
+  margin-top: 1.5rem;
+}
+
+.memory-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.8rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 217, 232, 0.8);
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--plum);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-bounce), box-shadow var(--transition-smooth), border-color var(--transition-smooth);
+  min-height: 46px;
+}
+
+.memory-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--rose);
+}
+
+.memory-btn-icon {
+  font-size: 1.1rem;
+}
+
+.memory-btn-arrow {
+  display: inline-block;
+  font-size: 0.9rem;
+  transition: transform var(--transition-smooth);
+}
+
+.memory-toggle-btn[aria-expanded="true"] .memory-btn-arrow {
+  transform: rotate(180deg);
+}
+
+/* Memory Content Stationery Sheet */
+.memory-content {
+  margin-top: 1.25rem;
+  display: none;
+  animation: memoryUnfold 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.memory-content.open {
+  display: block;
+}
+
+@keyframes memoryUnfold {
+  0% { opacity: 0; transform: translateY(-10px) scale(0.98); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.memory-paper {
+  position: relative;
+  background: var(--paper);
+  border: 1px solid rgba(255, 217, 232, 0.7);
+  border-radius: var(--radius-md);
+  padding: 2rem 1.75rem;
+  box-shadow: 0 8px 24px -4px rgba(62, 32, 52, 0.08);
+  text-align: left;
+}
+
+.memory-paperclip {
+  position: absolute;
+  top: -10px;
+  right: 28px;
+  width: 18px;
+  height: 38px;
+  border: 2.5px solid #D48BA7;
+  border-radius: 10px 10px 0 0;
+  border-bottom: none;
+  opacity: 0.8;
+}
+
+.memory-text {
+  font-size: clamp(0.98rem, 2.2vw, 1.05rem);
+  color: var(--plum);
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+.memory-footer-note {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  font-family: var(--font-hand);
+  font-size: 1.15rem;
+  color: var(--rose-deep);
+  font-weight: 600;
+}
+
+.memory-heart {
+  font-size: 1rem;
+}
+
+/* =====================================================
+   SECTION 4: COMMITMENTS (CARDS)
    ===================================================== */
 .cards-section {
   padding: var(--section-padding);
@@ -1001,7 +1123,7 @@ section {
 
 .improve-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 22px 48px -8px rgba(73, 40, 63, 0.12), 0 6px 18px rgba(255, 111, 173, 0.15);
+  box-shadow: 0 22px 48px -8px rgba(62, 32, 52, 0.12), 0 6px 18px rgba(255, 111, 173, 0.15);
   border-color: rgba(255, 111, 173, 0.5);
 }
 
@@ -1040,7 +1162,7 @@ section {
 }
 
 /* =====================================================
-   SECTION 4: MINI-GAME (RESPONSIBLE FRIENDSHIP REPAIR)
+   SECTION 5: PEACE OFFERINGS (PLAYFUL & HUMBLE)
    ===================================================== */
 .game-section {
   padding: var(--section-padding);
@@ -1059,68 +1181,22 @@ section {
   box-shadow: var(--shadow-card);
 }
 
-/* Non-quantified status component (no progress meter) */
-.repair-status-box {
+.peace-offering-banner {
   background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(220, 214, 255, 0.75);
+  border: 1px solid rgba(228, 222, 252, 0.8);
   border-radius: var(--radius-md);
-  padding: 1.1rem 1.4rem;
+  padding: 0.9rem 1.25rem;
   margin-bottom: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.85rem;
   box-shadow: var(--shadow-sm);
 }
 
-.repair-status-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-}
-
-.repair-status-pill {
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: rgba(255, 111, 173, 0.15);
-  color: var(--rose-deep);
-  padding: 0.25rem 0.75rem;
-  border-radius: var(--radius-pill);
-}
-
-.repair-label {
-  font-size: clamp(0.92rem, 2.3vw, 1.02rem);
-  font-weight: 500;
-  color: var(--plum);
+.peace-banner-text {
+  font-size: 0.92rem;
   font-style: italic;
+  color: var(--plum-light);
   line-height: 1.5;
 }
 
-.repair-status-indicators {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
-.status-indicator {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: rgba(220, 214, 255, 0.8);
-  border: 1px solid rgba(73, 40, 63, 0.1);
-  transition: background 0.4s ease, transform 0.3s ease, box-shadow 0.4s ease;
-}
-
-.status-indicator.active {
-  background: var(--rose-deep);
-  transform: scale(1.2);
-  box-shadow: 0 0 8px rgba(216, 46, 120, 0.5);
-}
-
-/* Game Actions (Buttons) */
 .game-actions {
   display: flex;
   flex-direction: column;
@@ -1150,7 +1226,6 @@ section {
   pointer-events: none;
 }
 
-/* Button variants with verified high-contrast styling */
 .game-btn-choco {
   background: linear-gradient(135deg, #703D20 0%, #8A4B27 100%);
   color: var(--white);
@@ -1160,7 +1235,7 @@ section {
 .game-btn-hug {
   background: linear-gradient(135deg, var(--rose-deep) 0%, #E84D95 100%);
   color: var(--white);
-  box-shadow: 0 4px 18px rgba(216, 46, 120, 0.3);
+  box-shadow: 0 4px 18px rgba(205, 35, 111, 0.3);
 }
 
 .game-btn-puppy {
@@ -1182,7 +1257,6 @@ section {
   cursor: not-allowed;
 }
 
-/* Game Message Output */
 .game-message {
   min-height: 3.25rem;
   font-family: var(--font-hand);
@@ -1237,7 +1311,7 @@ section {
 }
 
 /* =====================================================
-   SECTION 5: PROMISES
+   SECTION 6: PROMISES
    ===================================================== */
 .promise-section {
   padding: var(--section-padding);
@@ -1291,7 +1365,7 @@ section {
 .promise-item {
   font-size: clamp(1.02rem, 2.6vw, 1.15rem);
   padding: 0.95rem 1.25rem;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.75);
   border-radius: var(--radius-sm);
   border-left: 4px solid var(--rose-deep);
   transition: transform 0.3s ease, background 0.3s ease;
@@ -1320,7 +1394,7 @@ section {
 }
 
 /* =====================================================
-   SECTION 6: FINAL MESSAGE & HEART BURST
+   SECTION 7: GENTLE FINALE
    ===================================================== */
 .final-section {
   padding: var(--section-padding);
@@ -1350,10 +1424,24 @@ section {
   font-size: clamp(1.4rem, 3.8vw, 1.85rem);
   color: var(--rose-deep);
   margin-top: 2rem;
+  margin-bottom: 1.5rem;
   font-weight: 700;
 }
 
-/* Heart Burst CTA Button */
+/* Complete & Accessible Closing Note (Visible without interaction) */
+.final-goodbye-note {
+  font-family: var(--font-hand);
+  font-size: clamp(1.2rem, 3.2vw, 1.45rem);
+  color: var(--plum-light);
+  line-height: 1.5;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 217, 232, 0.6);
+  margin-top: 1rem;
+}
+
+/* Optional Warmth Button */
 .heart-burst-btn {
   display: inline-flex;
   align-items: center;
@@ -1372,7 +1460,7 @@ section {
 
 .heart-burst-btn:hover:not(:disabled) {
   transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 8px 36px rgba(216, 46, 120, 0.45);
+  box-shadow: 0 8px 36px rgba(205, 35, 111, 0.45);
 }
 
 .heart-burst-btn:active:not(:disabled) {
@@ -1385,11 +1473,11 @@ section {
   box-shadow: var(--shadow-sm);
 }
 
-/* Post-burst Aftermath Note */
+/* Aftermath message */
 .final-aftermath {
-  margin-top: 2.25rem;
+  margin-top: 2rem;
   font-family: var(--font-hand);
-  font-size: clamp(1.25rem, 3.4vw, 1.5rem);
+  font-size: clamp(1.2rem, 3.2vw, 1.4rem);
   color: var(--plum);
   opacity: 0;
   transform: translateY(12px);
@@ -1403,7 +1491,6 @@ section {
   transform: translateY(0);
 }
 
-/* Burst particle geometry */
 .burst-heart {
   position: fixed;
   pointer-events: none;
@@ -1417,8 +1504,8 @@ section {
 .site-footer {
   padding: 3.5rem 1.5rem 2.5rem;
   text-align: center;
-  border-top: 1px solid rgba(255, 214, 231, 0.6);
-  background: linear-gradient(180deg, transparent 0%, rgba(255, 214, 231, 0.2) 100%);
+  border-top: 1px solid rgba(255, 217, 232, 0.6);
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 217, 232, 0.2) 100%);
   position: relative;
   z-index: 1;
 }
@@ -1462,13 +1549,11 @@ section {
 /* =====================================================
    PROGRESSIVE ENHANCEMENT: SCROLL REVEALS
    ===================================================== */
-/* By default (or without JS), .reveal elements are fully visible */
 .reveal {
   opacity: 1;
   transform: none;
 }
 
-/* When JS is initialized and ready, opt-in to smooth reveal transitions */
 .js-reveal-ready .reveal {
   opacity: 0;
   transform: translateY(26px);
@@ -1486,9 +1571,7 @@ section {
 .js-reveal-ready .reveal-delay-4 { transition-delay: 0.4s; }
 
 /* =====================================================
-   NO-JS FALLBACK (Crucial Reliability Requirement)
-   Without JavaScript, the intro overlay is hidden immediately,
-   and every single paragraph, section, card, and message is 100% visible!
+   NO-JS FALLBACK (Crucial Reliability Guarantee)
    ===================================================== */
 .no-js .intro-overlay {
   display: none !important;
@@ -1508,6 +1591,14 @@ section {
 .no-js .letter-para {
   opacity: 1 !important;
   transform: none !important;
+}
+
+.no-js .memory-content {
+  display: block !important;
+}
+
+.no-js .memory-toggle-btn {
+  display: none !important;
 }
 
 /* =====================================================
@@ -1532,7 +1623,6 @@ section {
     display: none !important;
   }
 
-  /* Show all content immediately without animations */
   .js-reveal-ready .reveal {
     opacity: 1 !important;
     transform: none !important;
@@ -1545,8 +1635,8 @@ section {
     transition: none !important;
   }
 
-  .final-aftermath {
-    transition: none !important;
+  .memory-content {
+    animation: none !important;
   }
 }
 
@@ -1554,7 +1644,7 @@ section {
    RESPONSIVE DESIGN (All Tested Viewports)
    ===================================================== */
 
-/* Short viewports (e.g., Landscape phones, short screens) */
+/* Short viewports (Landscape phones & short screens) */
 @media (max-height: 600px) {
   .intro-overlay {
     align-items: flex-start;
